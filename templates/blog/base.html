@@ -3,11 +3,11 @@
 <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
 
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es-ar">
 
 <head>
     <meta charset="utf-8">
-    <title>Informatorio - Trabajo final para aprobar curso WEB</title>
+    <title>Informatorio - Trabajo final </title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="Free HTML Templates" name="keywords">
     <meta content="Free HTML Templates" name="description">
@@ -60,12 +60,12 @@
         <!-- Navbar Start -->
         <div class="container-fluid p-0">
             <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-lg-5">
-                <a href={% url 'inicio' %} class="navbar-brand ml-lg-3">
-                    <h1 class="m-0 display-5 text-uppercase text-primary"><i class="fa fa-truck mr-2"></i>Blog</h1>
+                {% comment %} <a href={% url 'inicio' %} class="navbar-brand ml-lg-3"> {% endcomment %}
+                    <h5 class="m-0 display-5 text-uppercase text-primary"><i class="fa fa-truck mr-2"></i>Trabajo Final</h5>
                 </a>
-                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                {% comment %} <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
                     <span class="navbar-toggler-icon"></span>
-                </button>
+                </button> {% endcomment %}
                 <div class="collapse navbar-collapse justify-content-between px-lg-3" id="navbarCollapse">
                     <div class="navbar-nav m-auto py-0">
                         {% block navegador %}{% endblock navegador %}
@@ -76,7 +76,7 @@
 
                         <div class="nav-item   dropdown">
                             {%if request.user.is_authenticated %}
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Hola @{{ request.user.username | title }}</a>
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"> bienvenido @{{ request.user.username | title }}</a>
                                 <div class="dropdown-menu rounded-0 m-0">
                                     {% if request.user.is_staff %}
                                         <a href={% url 'crear_articulo' %} class="dropdown-item">Crear Articulo</a>
@@ -102,16 +102,16 @@
         <!-- Header Start -->
         <div class="jumbotron jumbotron-fluid mb-5">
             <div class="container text-center py-5">
-                <h1 class="text-primary mb-4">blog tecnologia: IA</h1>
+                <h1 class="text-primary mb-4">Internet de las Cosas (IoT) para la gestión eficiente de recursos energéticos</h1>
                 <h1 class="text-white display-3 mb-5">Informatorio</h1>
-                <div class="mx-auto" style="width: 100%; max-width: 600px;">
+                {% comment %} <div class="mx-auto" style="width: 100%; max-width: 600px;">
                     <div class="input-group">
                         <input type="text" class="form-control border-light" style="padding: 30px;" placeholder="Articulo">
                         <div class="input-group-append">
                             <button class="btn btn-primary px-3">Buscar</button>
                         </div>
                     </div>
-                </div>
+                </div> {% endcomment %}
             </div>
         </div>
         <!-- Header End -->
