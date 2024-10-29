@@ -1,21 +1,22 @@
 # tema:
 Internet de las Cosas (IoT) para la gestión eficiente de recursos energético
 
-# Lenguaje:
+### Lenguaje:
 Python
 
-#Framework:
+### Framework:
 Django
 
-# Alumno:
+#### Alumno:
 Federico Damián Peralta
 
-# Grupo 14
+#### Grupo 
+grupo: N° 14
 
-# Institución:
+### Institución:
 Informatorio - Chaco
 
-# Año:
+### Año:
 2024
 
 
