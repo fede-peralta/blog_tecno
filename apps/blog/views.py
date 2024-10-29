@@ -54,6 +54,22 @@ class ArticuloDetailView(DetailView):
     context_object_name = 'articulo'
     slug_field = 'slug'
     slug_url_kwarg = 'articulo_slug'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['comentarios'] = self.object.comentarios.all()  # Obtener los comentarios
+        context['form'] = forms.ComentarioForm()  # Crear el formulario para nuevos comentarios
+        return context
+
+    def post(self, request, *args, **kwargs):
+        articulo = self.get_object()
+        form = forms.ComentarioForm(request.POST)
+        if form.is_valid():
+            comentario = form.save(commit=False)
+            comentario.articulo = articulo  # Asignar el artículo
+            comentario.save()
+            return redirect('articulo', articulo_slug=articulo.slug)  # Redirigir a la misma página
+        return render(request, self.template_name, {'articulo': articulo, 'form': form})
 
 
 class ArticulosByCategoriaView(ListView):

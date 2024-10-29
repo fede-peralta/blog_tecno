@@ -3,6 +3,49 @@ from django.contrib.auth.models import User
 from ckeditor.fields import RichTextField
 from django.utils.text import slugify
 
+##########################
+#### Modelo Artículos ####
+##########################
+
+class Articulo(models.Model):
+    titulo = models.CharField(max_length=250, unique=True, verbose_name='Título')
+    slug = models.SlugField()
+    bajada = models.CharField(max_length=150, verbose_name='Bajada')
+    contenido = RichTextField(verbose_name='Contenido')
+    imagen = models.ImageField(upload_to='blog/articulos/imagenes', null=True, blank=True, verbose_name='Imagen', default='../static/post_default.png')
+    publicado = models.BooleanField(default=False, verbose_name='Publicado')
+    categoria = models.ForeignKey('Categoria', on_delete=models.SET_NULL, related_name='get_articulos', null=True, blank=True, verbose_name='Categoría')
+    autor = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='get_articulos', null=True, blank=True, verbose_name='Autor')
+    etiquetas = models.ManyToManyField('Etiqueta', verbose_name='Etiquetas')
+    creacion = models.DateTimeField(auto_now_add=True, verbose_name='Fecha de creación')
+    actualizacion = models.DateTimeField(auto_now=True, verbose_name='Fecha de actualización')
+
+    class Meta:
+        verbose_name = 'Publicación'
+        verbose_name_plural = 'Publicaciones'
+        ordering = ['-creacion']
+
+    def delete(self, using=None, keep_parents=False):
+        self.imagen.delete(self.imagen.name)
+        return super().delete()
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.titulo)
+        super(Articulo, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.titulo
+
+class Comentario(models.Model):
+    articulo = models.ForeignKey(Articulo, related_name='comentarios', on_delete=models.CASCADE)  # Corrige aquí
+    nombre = models.CharField(max_length=100)
+    email = models.EmailField()
+    mensaje = models.TextField()
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Comentario de {self.nombre} en {self.articulo.titulo}'
+
 ###########################
 ##### Modelo Acerca de ####
 ###########################
@@ -13,8 +56,8 @@ class Acerca(models.Model):
     actualizacion = models.DateTimeField(auto_now=True, verbose_name='Fecha de actualización')
 
     class Meta:
-        verbose_name='Acerca de'
-        verbose_name_plural='Acerca de nosotros'
+        verbose_name = 'Acerca de'
+        verbose_name_plural = 'Acerca de nosotros'
         ordering = ['-creacion']
     
     def __str__(self):
@@ -32,13 +75,12 @@ class Red(models.Model):
     actualizacion = models.DateTimeField(auto_now=True, verbose_name='Fecha de actualización')
 
     class Meta:
-        verbose_name='Red Social'
-        verbose_name_plural='Redes Sociales'
+        verbose_name = 'Red Social'
+        verbose_name_plural = 'Redes Sociales'
         ordering = ['nombre']
     
     def __str__(self):
         return self.nombre
-
 
 ###########################
 ##### Modelo Categoria ####
@@ -52,8 +94,8 @@ class Categoria(models.Model):
     actualizacion = models.DateTimeField(auto_now=True, verbose_name='Fecha de actualización')
 
     class Meta:
-        verbose_name='Categoría'
-        verbose_name_plural='Categorías'
+        verbose_name = 'Categoría'
+        verbose_name_plural = 'Categorías'
         ordering = ['nombre']
 
     def save(self, *args, **kwargs):
@@ -62,7 +104,6 @@ class Categoria(models.Model):
 
     def __str__(self):
         return self.nombre
-
 
 ##########################
 ##### Modelo Etiqueta ####
@@ -75,44 +116,9 @@ class Etiqueta(models.Model):
     actualizacion = models.DateTimeField(auto_now=True, verbose_name='Fecha de actualización')
 
     class Meta:
-        verbose_name='Etiqueta'
-        verbose_name_plural='Etiquetas'
+        verbose_name = 'Etiqueta'
+        verbose_name_plural = 'Etiquetas'
         ordering = ['nombre']
     
     def __str__(self):
         return self.nombre
-    
-
-##########################
-#### Modelo Artículos ####
-##########################
-
-class Articulo(models.Model):
-    titulo = models.CharField(max_length=250, unique=True, verbose_name='Título')
-    slug = models.SlugField()
-    bajada = models.CharField(max_length=150, verbose_name='Bajada')
-    contenido = RichTextField(verbose_name='Contenido')
-    imagen = models.ImageField(upload_to='blog/articulos/imagenes', null=True, blank=True, verbose_name='Imagen', default='../static/post_default.png')
-    # imagen = models.ImageField(upload_to='blog/articulos/imagenes', null=True, blank=True, verbose_name='Imagen') # ORIGINAL
-    publicado = models.BooleanField(default=False, verbose_name='Publicado')
-    categoria = models.ForeignKey(Categoria, on_delete=models.SET_NULL, related_name='get_articulos',null=True, blank=True, verbose_name='Categoría')
-    autor = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='get_articulos', null=True, blank=True, verbose_name='Autor')
-    etiquetas = models.ManyToManyField(Etiqueta, verbose_name='Etiquetas')
-    creacion = models.DateTimeField(auto_now_add=True, verbose_name='Fecha de creación')
-    actualizacion = models.DateTimeField(auto_now=True, verbose_name='Fecha de actualización')
-
-    class Meta:
-        verbose_name='Publicación'
-        verbose_name_plural='Publicaciones'
-        ordering = ['-creacion']
-    
-    def delete(self, using = None, keep_parents = False):
-        self.imagen.delete(self.imagen.name)
-        return super().delete()
-    
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.titulo)
-        super(Articulo, self).save(*args, **kwargs)
-
-    def __str__(self):
-        return self.titulo

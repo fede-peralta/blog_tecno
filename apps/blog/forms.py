@@ -2,14 +2,22 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
 from .models import Articulo
+from django import forms
+from .models import Comentario
 
 
+class ComentarioForm(forms.ModelForm):
+    class Meta:
+        model = Comentario
+        fields = ['nombre', 'email', 'mensaje']
+        
+        
 class ArticuloForm(forms.ModelForm):
 
     class Meta:
         model = Articulo
         fields = ['titulo', 'bajada', 'contenido',
-                  'imagen', 'categoria', 'etiquetas']
+                  'imagen', 'categoria' ,'etiquetas' ]
 
         widgets = {
             'titulo': forms.TextInput(attrs={'class': 'form-control'}),
@@ -17,7 +25,7 @@ class ArticuloForm(forms.ModelForm):
             'contenido': forms.Textarea(attrs={'class': 'form-control'}),
             'imagen': forms.ClearableFileInput(attrs={'class': 'form-control'}),
             'categoria': forms.Select(attrs={'class': 'form-control'}),
-            'etiquetas': forms.SelectMultiple(attrs={'class': 'form-control'}),
+            # 'etiquetas': forms.SelectMultiple(attrs={'class': 'form-control'}),
         }
 
 
