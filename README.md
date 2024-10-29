@@ -1,19 +1,21 @@
-# Proyecto de Ciberseguridad y Protección de Datos
+# tema:
+Internet de las Cosas (IoT) para la gestión eficiente de recursos energético
 
-### Lenguaje:
+# Lenguaje:
 Python
 
-### Framework:
+#Framework:
 Django
 
-### Alumno:
+# Alumno:
 Federico Damián Peralta
 
-### Institución:
-Informatorio
+# Grupo 14
 
-### Año:
+# Institución:
+Informatorio - Chaco
+
+# Año:
 2024
 
-### Tema:
-Ciberseguridad y Protección de Datos
+
